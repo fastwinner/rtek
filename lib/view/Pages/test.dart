@@ -43,7 +43,7 @@ class MyGridView extends StatelessWidget {
             style: ElevatedButton.styleFrom (
               backgroundColor: Color(0xFFD9D9D9),
               shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0), // Forme arrondie du bouton
+                    borderRadius: BorderRadius.circular(10.0), 
                   ), 
             ),
             onPressed: (){
