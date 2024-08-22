@@ -1,17 +1,18 @@
 
 import 'package:flutter/material.dart';
+import 'package:rtek/view/Pages/Accueil.dart';
 
-class CenteredContentPage extends StatefulWidget {
+class navbar extends StatefulWidget {
   @override
-  _CenteredContentPageState createState() => _CenteredContentPageState();
+  _navbarState createState() => _navbarState();
 }
 
-class _CenteredContentPageState extends State<CenteredContentPage> {
+class _navbarState extends State<navbar> {
   int myCurrentIndex = 0;
 
   // Liste des pages
   final List<Widget> pages = [
-    Center(child: Text('Home Page')),
+    accueil(),
     Center(child: Text('Favorite Page')),
     Center(child: Text('Settings Page')),
     Center(child: Text('Profile Page')),

@@ -1,72 +1,146 @@
 import 'package:flutter/material.dart';
-import 'package:rtek/view/Pages/historique.dart';
-import 'package:rtek/view/Pages/messages.dart';
-import 'package:rtek/view/Pages/rdv.dart';
-import 'package:rtek/view/Pages/resultat.dart';
 
-class MyGridView extends StatelessWidget {
-  final List<String> nom = [
-    'Mes resultats',
-    'Messages',
-    'Prendre rdv',
-    'Historiques',
-  ];
+void main() {
+  runApp(MyApp());
+}
 
-  final List<String> icone = [
-    "assets/icones/Resume.png",
-    "assets/icones/Message.png",
-    "assets/icones/Calendar.png",
-    "assets/icones/Medical.png",
-  ];
-
-  final List<Widget> lien = [
-    resultat(),
-    message(),
-    rdv(),
-    historique()
-  ];
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10.0,
-          mainAxisSpacing: 10.0,
-          childAspectRatio: 1.0,
-        ),
-        itemCount: nom.length,
-        itemBuilder: (context, index) {
-          return ElevatedButton(
-            style: ElevatedButton.styleFrom (
-              backgroundColor: Color(0xFFD9D9D9),
-              shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0), 
-                  ), 
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Container(
+            width: 300,
+            height: 150,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/oeil.png'),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(15.0),
             ),
-            onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => lien[index] ),
-                );
-            },
             child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(icone[index]),
-                    SizedBox(height: 20,),
-                    Text(
-                      nom[index],
-                      style: TextStyle(color: Color(0xFF535353), fontSize: 20),
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  height: 50,
+                  color: Color(0xFF748CDF),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Positioned(
+                          bottom: 10,
+                          left: 10,
+                          child: Container(
+                            width: 175,
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Qu'est ce que la santé oculaire ?",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 10,
+                          right: 10,
+                          child: Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
-                  ]
+                  ),
                 ),
-              
-          );
-        },
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 }
+
+
+/*
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: EyeHealthCard(),
+        ),
+      ),
+    );
+  }
+}
+
+class EyeHealthCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(15.0), // Rounded corners
+      child: Stack(
+        children: [
+          Image.asset(
+            'assets/images/oeil.png', // Replace with your image asset
+            width: 300,
+            height: 150,
+            fit: BoxFit.cover,
+          ),
+          Container(
+            width: 300,
+            height: 150,
+            //color: Colors.black.withOpacity(0.3), // Dark overlay for readability
+          ),
+          Container(
+            color: Color(0xFF748CDF),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Positioned(
+                  bottom: 10,
+                  left: 10,
+                  child: Text(
+                    "Qu'est ce que la santé oculaire ?", // Your text here
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 10,
+                  right: 10,
+                  child: Icon(
+                    Icons.arrow_forward,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+*/

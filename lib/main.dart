@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rtek/view/Pages/Accueil.dart';
+import 'package:rtek/view/Pages/navbar.dart';
 import 'package:rtek/view/Pages/test.dart'; 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: accueil(),
+      home: navbar(),
     );
   }
 }
