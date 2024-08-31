@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rtek/Service/Auth.dart';
 import 'package:rtek/view/Pages/Accueil.dart';
+import 'package:rtek/view/Pages/navbar.dart';
 
 class connexion extends StatefulWidget {
   const connexion({super.key});
@@ -19,6 +21,10 @@ class _connexionState extends State<connexion> {
 
   void _connect() async {
     if (_formKey.currentState!.validate()) {
+      var result = await AuthService.loginUser(userNameController.text, passwordController.text);
+
+    if (result['success']) {
+      //je vais enregistrer le token
       FocusScope.of(context).requestFocus(FocusNode());
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -31,7 +37,8 @@ class _connexionState extends State<connexion> {
       FocusScope.of(context).requestFocus(FocusNode());
 
       Navigator.push(
-          context, PageRouteBuilder(pageBuilder: (_, __, ___) => accueil()));
+          context, PageRouteBuilder(pageBuilder: (_, __, ___) => navbar()));
+
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -43,6 +50,7 @@ class _connexionState extends State<connexion> {
       );
       FocusScope.of(context).requestFocus(FocusNode());
     }
+    } 
   }
 
   @override

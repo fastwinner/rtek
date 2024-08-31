@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:rtek/Service/Auth.dart';
+import 'package:rtek/view/Pages/Accueil.dart';
+import 'package:rtek/view/Pages/navbar.dart';
+
 class inscription extends StatefulWidget {
   const inscription({super.key});
 
@@ -18,35 +22,49 @@ class _inscriptionState extends State<inscription> {
   final passwordController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  String prenom = "prenomParDefaut";
+  String email = "Email@gmail.com";
 
   void _signin() async {
     if (_formKey.currentState!.validate()) {
-      FocusScope.of(context).requestFocus(FocusNode());
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+      var result = await AuthService.register(
+        userNameController.text,
+        prenom,
+        email,
+        confirmPasswordController.text,
+        phoneNumberController.text,
+      );
+      if (result['success'] == true) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
             backgroundColor: Colors.green,
             content: Text(
               'Bienvenue ' + userNameController.text,
               style: TextStyle(color: Colors.white),
-            )),
-      );
-      FocusScope.of(context).requestFocus(FocusNode());
-      /**
-         * 
+            ),
+          ),
+        );
         Navigator.push(
-            context,
-            PageRouteBuilder(
-                pageBuilder: (_, __, ___) => MyHomePage(user_id: user_id)));
-        */
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            backgroundColor: Colors.red,
-            content: Text(
-              'Nom d\'utilisateur ou mot de passe incorrect',
-              style: TextStyle(color: Colors.white),
-            )),
-      );
+            context, PageRouteBuilder(pageBuilder: (_, __, ___) => navbar()));
+      } else {
+        print(result);
+        var errors = result["errors"];
+        errors.forEach((key, value) {
+          for (var error in value) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Colors.red,
+                content: Text(
+                  error,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            );
+            print(error);
+          }
+        });
+      }
+
       FocusScope.of(context).requestFocus(FocusNode());
     }
   }
@@ -58,8 +76,7 @@ class _inscriptionState extends State<inscription> {
         body: ListView(
           children: [
             Container(
-              height: MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).size.height / 10,
+              //height: MediaQuery.of(context).size.height,
               alignment: Alignment.center,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -82,7 +99,6 @@ class _inscriptionState extends State<inscription> {
                       fontFamily: "Sahitya",
                     ),
                   ),
-                 
                   Form(
                       key: _formKey,
                       child: Padding(
@@ -141,7 +157,8 @@ class _inscriptionState extends State<inscription> {
                               child: TextFormField(
                                 keyboardType: TextInputType.phone,
                                 inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly, // N'autorise que les chiffres
+                                  FilteringTextInputFormatter
+                                      .digitsOnly, // N'autorise que les chiffres
                                 ],
                                 decoration: InputDecoration(
                                   prefixIcon: Image.asset(
@@ -291,30 +308,29 @@ class _inscriptionState extends State<inscription> {
                               height: 20,
                             ),
                             ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  elevation: 5,
-                                  minimumSize: Size(175, 40),
-                                  backgroundColor: Color(0xFF748CDF),
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(10))),
-                              onPressed: _signin,
-                              child: Text(
-                                "S'inscrire",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "inter"),
-                              )),
+                                style: ElevatedButton.styleFrom(
+                                    elevation: 5,
+                                    minimumSize: Size(175, 40),
+                                    backgroundColor: Color(0xFF748CDF),
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10))),
+                                onPressed: _signin,
+                                child: Text(
+                                  "S'inscrire",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "inter"),
+                                )),
                             SizedBox(height: 40),
                             Row(
                               children: [
                                 Expanded(
                                   child: Divider(
                                     thickness: 1,
-                                    color: Colors
-                                        .grey[300], 
+                                    color: Colors.grey[300],
                                   ),
                                 ),
                                 Padding(
@@ -333,73 +349,70 @@ class _inscriptionState extends State<inscription> {
                                 Expanded(
                                   child: Divider(
                                     thickness: 1,
-                                    color: Colors
-                                        .grey[300],
+                                    color: Colors.grey[300],
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 20,),
+                            SizedBox(
+                              height: 20,
+                            ),
                             ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                side: BorderSide(
-                                  color: Color(0xFF748CDF),
-                                  width: 2,
-                                ),
-                                minimumSize: Size(175, 40),
-                                backgroundColor: Colors.white,
-                                foregroundColor: Colors.black,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10))),
-                              onPressed: (){},
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    "assets/icones/google_13170545.png",
-                                    width: 24,
-                                    height: 24,
-                                  ),
-                                  Text(
-                                    "Connectez vous avec google",
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontFamily: "poppins"),
-                                  ),
-                                ],
-                              )
-                        ),
-
+                                style: ElevatedButton.styleFrom(
+                                    side: BorderSide(
+                                      color: Color(0xFF748CDF),
+                                      width: 2,
+                                    ),
+                                    minimumSize: Size(175, 40),
+                                    backgroundColor: Colors.white,
+                                    foregroundColor: Colors.black,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10))),
+                                onPressed: () {},
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      "assets/icones/google_13170545.png",
+                                      width: 24,
+                                      height: 24,
+                                    ),
+                                    Text(
+                                      "Connectez vous avec google",
+                                      style: TextStyle(
+                                          fontSize: 13, fontFamily: "poppins"),
+                                    ),
+                                  ],
+                                )),
                             ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                side: BorderSide(
-                                  color: Color(0xFF748CDF),
-                                  width: 2,
-                                ),
-                                minimumSize: Size(175, 40),
-                                backgroundColor: Colors.white,
-                                foregroundColor: Colors.black,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10))),
-                              onPressed: (){},
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    "assets/icones/social_12942327.png",
-                                    width: 24,
-                                    height: 24,
-                                  ),
-                                  Text(
-                                    "Connectez vous avec google",
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontFamily: "poppins"),
-                                  ),
-                                ],
-                              )
-                        ),
-
+                                style: ElevatedButton.styleFrom(
+                                    side: BorderSide(
+                                      color: Color(0xFF748CDF),
+                                      width: 2,
+                                    ),
+                                    minimumSize: Size(175, 40),
+                                    backgroundColor: Colors.white,
+                                    foregroundColor: Colors.black,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10))),
+                                onPressed: () {},
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      "assets/icones/social_12942327.png",
+                                      width: 24,
+                                      height: 24,
+                                    ),
+                                    Text(
+                                      "Connectez vous avec google",
+                                      style: TextStyle(
+                                          fontSize: 13, fontFamily: "poppins"),
+                                    ),
+                                  ],
+                                )),
                           ],
                         ),
                       ))
